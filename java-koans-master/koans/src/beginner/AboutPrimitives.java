@@ -175,26 +175,27 @@ public class AboutPrimitives {
 
     @Koan
     public void primitivesOfTypeFloatCanBeDeclaredWithExponents() {
-        assertEquals(getType(1e3f), __);
-        assertEquals(1.0e3f, __);
-        assertEquals(1E3f, __);
+        assertEquals(getType(1e3f), float.class);
+        //you must add char 'f' to identify float type
+        assertEquals(1.0e3f, 1000.0f);
+        assertEquals(1E3f, 1000f);
     }
 
     @Koan
     public void primitivesOfTypeFloatHaveAnObjectTypeFloat() {
         Object number = 1f;
-        assertEquals(getType(number), __);
+        assertEquals(getType(number), Float.class);
     }
 
     @Koan
     public void floatsHaveASmallerRangeThanDoubles() {
-        assertEquals(Float.MIN_VALUE, __);
-        assertEquals(Float.MAX_VALUE, __);
+        assertEquals(Float.MIN_VALUE, 1.401298464324817e-45f);
+        assertEquals(Float.MAX_VALUE, 3.40282346638528860e+38f);
     }
 
     @Koan
     public void floatSize() {
-        assertEquals(Float.SIZE, __);
+        assertEquals(Float.SIZE, 32);
     }
 
     private Class<?> getType(int value) {
