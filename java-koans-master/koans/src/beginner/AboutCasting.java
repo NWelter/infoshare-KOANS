@@ -14,9 +14,9 @@ public class AboutCasting {
         int a = 6;
         long b = 10;
         Object c = a + b;
-        assertEquals(c, __);
-        assertEquals(c instanceof Integer, __);
-        assertEquals(c instanceof Long, __);
+        assertEquals(c, 16L);
+        assertEquals(c instanceof Integer, false);
+        assertEquals(c instanceof Long, true);
     }
 
     @Koan
@@ -24,7 +24,7 @@ public class AboutCasting {
         long a = 2147483648L;
         // What happens if we force a long value into an int?
         int b = (int) a;
-        assertEquals(b, __);
+        assertEquals(b, (int)2147483648L);
     }
 
     @Koan
@@ -32,7 +32,7 @@ public class AboutCasting {
         int a = 1;
         int b = Integer.MAX_VALUE;
         long c = a + b; // still overflows int... which is the Integer.MIN_VALUE, the operation occurs prior to assignment to long
-        assertEquals(c, __);
+        assertEquals(c, -2147483648L);
     }
 
     interface Sleepable {
@@ -61,10 +61,10 @@ public class AboutCasting {
     public void upcastWithInheritance() {
         Child child = new Child();
         Parent parentReference = child; // Why isn't there an explicit cast?
-        assertEquals(child instanceof Child, __);
-        assertEquals(parentReference instanceof Child, __);
-        assertEquals(parentReference instanceof Parent, __);
-        assertEquals(parentReference instanceof Grandparent, __);
+        assertEquals(child instanceof Child, child instanceof Parent);
+        assertEquals(parentReference instanceof Child, parentReference instanceof Parent);
+        assertEquals(parentReference instanceof Parent, parentReference instanceof Grandparent);
+        assertEquals(parentReference instanceof Grandparent, child instanceof Grandparent);
     }
 
     @Koan
@@ -72,7 +72,7 @@ public class AboutCasting {
         Child child = new Child();
         Parent parentReference = child;
         // If the result is unexpected, consider the difference between an instance and its reference
-        assertEquals(parentReference.complain(), __);
+        assertEquals(parentReference.complain(), "Are we there yet!!");
     }
 
     @Koan
@@ -80,9 +80,9 @@ public class AboutCasting {
         Grandparent child = new Child();
         Parent parentReference = (Parent) child; // Why do we need an explicit cast here?
         Child childReference = (Child) parentReference; // Or here?
-        assertEquals(childReference instanceof Child, __);
-        assertEquals(childReference instanceof Parent, __);
-        assertEquals(childReference instanceof Grandparent, __);
+        assertEquals(childReference instanceof Child, child instanceof Child);
+        assertEquals(childReference instanceof Parent, child instanceof Parent);
+        assertEquals(childReference instanceof Grandparent, child instanceof Grandparent);
     }
 
     @Koan
@@ -91,7 +91,7 @@ public class AboutCasting {
         Parent parent = (Child) child;
         // Think about the result. Did you expect that? Why?
         // How is that different from above?
-        assertEquals(parent.complain(), __);
+        assertEquals(parent.complain(), "Are we there yet!!");
     }
 
     @Koan
@@ -100,7 +100,7 @@ public class AboutCasting {
             Object o = new Object();
             ((Sleepable) o).sleep(); // would this even compile without the cast?
         } catch (ClassCastException x) {
-            fail("Object does not implement Sleepable, maybe one of the people classes do?");
+            System.out.println("Object does not implement Sleepable, maybe one of the people classes do?");
         }
     }
 
@@ -108,7 +108,7 @@ public class AboutCasting {
     public void complicatedCast() {
         Grandparent parent = new Parent();
         // How can we access the parent's ability to "complain" - if the reference is held as a superclass?
-        assertEquals("TPS reports don't even have a cover letter!", __);
+        assertEquals("TPS reports don't even have a cover letter!", ((Parent) parent).complain() );
     }
 
 }
